@@ -14,14 +14,6 @@ spring:
   security:
     oauth2:
       client:
-        registration:
-          keycloak:
-            provider: keycloak
-            client-id: api-gateway
-            client-secret: jM35k5hTECVQJee4s7s8gK7zRfoj5YS4
-            authorization-grant-type: authorization_code
-            redirect-uri: ${keycloak-client.server-url}/login/oauth2/code/keycloak
-            scope: openid
         provider:
           keycloak:
             authorization-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/auth
@@ -30,6 +22,16 @@ spring:
             jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
             user-name-attribute: name
             user-info-authentication-method: header
+
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: api-gateway
+            client-secret: jM35k5hTECVQJee4s7s8gK7zRfoj5YS4
+            authorization-grant-type: authorization_code
+            redirect-uri: ${keycloak-client.server-url}/login/oauth2/code/keycloak
+            scope: openid
+
       resourceserver:
         jwt:
           jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
