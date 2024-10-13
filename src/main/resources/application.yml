@@ -1,5 +1,6 @@
 server:
   port: 9090
+  address: 192.168.0.108
 
 spring:
   cloud:
@@ -16,11 +17,26 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: https://auth.uzgps.uz:8443/auth/realms/spring-realm
+            authorization-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/auth
+            token-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/token
+            user-info-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+            user-name-attribute: name
+            user-info-authentication-method: header
+
         registration:
-          keycloak-spring-gateway-client:
+          keycloak:
             provider: keycloak
             client-id: api-gateway
             client-secret: jM35k5hTECVQJee4s7s8gK7zRfoj5YS4
             authorization-grant-type: authorization_code
-            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+            redirect-uri: ${keycloak-client.server-url}/login/oauth2/code/keycloak
+            scope: openid
+
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+
+keycloak-client:
+  server-url: https://auth.uzgps.uz:8443/auth
+  realm: spring-realm
